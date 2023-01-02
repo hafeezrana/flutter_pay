@@ -45,6 +45,9 @@ class _MyHomePageState extends State<MyHomePage> {
       debugPrint(jsonEncode(paymentResult));
     }
 
+    void onApplePayResult(paymentResult) {
+      // Send the resulting Apple Pay token to your server / PSP
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -53,11 +56,23 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            ApplePayButton(
+              paymentConfigurationAsset: 'apple_pay.json',
+              paymentItems: paymentItems,
+              style: ApplePayButtonStyle.black,
+              type: ApplePayButtonType.buy,
+              margin: const EdgeInsets.only(top: 15.0),
+              onPaymentResult: onApplePayResult,
+              loadingIndicator: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
             GooglePayButton(
               paymentConfigurationAsset: 'google_payments.json',
               paymentItems: paymentItems,
-              type: GooglePayButtonType.pay,
+              type: GooglePayButtonType.checkout,
               margin: const EdgeInsets.only(top: 15.0),
+              width: 200,
               onPaymentResult: onGooglePayResult,
               loadingIndicator: const Center(
                 child: CircularProgressIndicator(),
