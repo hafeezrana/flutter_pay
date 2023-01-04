@@ -32,6 +32,10 @@ migrate_working_dir/
 .pub/
 /build/
 
+# Exclude all .env file from source control
+*env.g.dart
+*.env
+
 # Symbolication related
 app.*.symbols
 

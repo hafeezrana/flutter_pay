@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_pay/env/env.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'package:http/http.dart' as http;
@@ -177,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
-          'Authorization': 'Bearer secret_apiKey',
+          'Authorization': 'Bearer ${Env.secretkey}',
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: body,

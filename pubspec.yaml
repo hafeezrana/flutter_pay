@@ -21,6 +21,9 @@ dependencies:
   # pay: ^1.0.11
   flutter_stripe: ^7.0.0
   http: ^0.13.5
+  envied: ^0.3.0
+  build_runner: ^2.3.3
+  envied_generator: ^0.3.0
 
 dev_dependencies:
   flutter_test:
