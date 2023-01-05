@@ -42,20 +42,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    // const paymentItems = [
-    //   PaymentItem(
-    //     label: 'Total',
-    //     amount: '99.99',
-    //     status: PaymentItemStatus.final_price,
-    //   )
-    // ];
-    // void onGooglePayResult(Map<String, dynamic> paymentResult) {
-    //   debugPrint(jsonEncode(paymentResult));
-    // }
-
-    // void onApplePayResult(paymentResult) {
-    //   // Send the resulting Apple Pay token to your server / PSP
-    // }
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -64,28 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // ApplePayButton(
-            //   paymentConfigurationAsset: 'apple_pay.json',
-            //   paymentItems: paymentItems,
-            //   style: ApplePayButtonStyle.black,
-            //   type: ApplePayButtonType.buy,
-            //   margin: const EdgeInsets.only(top: 15.0),
-            //   onPaymentResult: onApplePayResult,
-            //   loadingIndicator: const Center(
-            //     child: CircularProgressIndicator(),
-            //   ),
-            // ),
-            // GooglePayButton(
-            //   paymentConfigurationAsset: 'google_payments.json',
-            //   paymentItems: paymentItems,
-            //   type: GooglePayButtonType.checkout,
-            //   margin: const EdgeInsets.only(top: 15.0),
-            //   width: 200,
-            //   onPaymentResult: onGooglePayResult,
-            //   loadingIndicator: const Center(
-            //     child: CircularProgressIndicator(),
-            //   ),
-            // ),
             TextButton(
               child: const Text('Make Payment'),
               onPressed: () async {
@@ -102,17 +66,14 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       final paymentIntent = await createPaymentIntent('100', 'USD');
 
-      //STEP 2: Initialize Payment Sheet
       await Stripe.instance
           .initPaymentSheet(
               paymentSheetParameters: SetupPaymentSheetParameters(
-                  paymentIntentClientSecret: paymentIntent![
-                      'client_secret'], //Gotten from payment intent
+                  paymentIntentClientSecret: paymentIntent!['client_secret'],
                   style: ThemeMode.dark,
                   merchantDisplayName: 'Ikay'))
           .then((value) {});
 
-      //STEP 3: Display Payment sheet
       displayPaymentSheet();
     } catch (err) {
       throw Exception(err);
@@ -138,8 +99,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 ));
-
-        // paymentIntent = null;
       }).onError((error, stackTrace) {
         throw Exception(error);
       });
@@ -168,13 +127,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   createPaymentIntent(String amount, String currency) async {
     try {
-      //Request body
       Map<String, dynamic> body = {
         'amount': calculateAmount(amount),
         'currency': currency,
       };
 
-      //Make post request to Stripe
       var response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
