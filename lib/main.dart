@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () async {
                 await makePayment();
               },
-            ),
+            )
           ],
         ),
       ),
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> makePayment() async {
     try {
-      final paymentIntent = await createPaymentIntent('100', 'USD');
+      final paymentIntent = await createPaymentIntent('1500', 'PKR');
 
       await Stripe.instance
           .initPaymentSheet(
@@ -147,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   calculateAmount(String amount) {
-    final calculatedAmout = (int.parse(amount)) * 100;
+    final calculatedAmout = (int.parse(amount)) * 21000;
     return calculatedAmout.toString();
   }
 }
