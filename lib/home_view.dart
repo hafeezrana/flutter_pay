@@ -49,6 +49,11 @@ class _HomeViewState extends State<HomeView> {
                   merchantDisplayName: 'Ikay'))
           .then((value) {});
 
+      // Stripe.buildWebCard(
+      //     controller: CardEditController(),
+      //     onCardChanged: (details) {},
+      //     placeholder: CardPlaceholder());
+
       displayPaymentSheet();
     } catch (err) {
       throw Exception(err);
