@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_pay/services/payment.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 import 'env/env.dart';
@@ -28,7 +29,7 @@ class _HomeViewState extends State<HomeView> {
             TextButton(
               child: const Text('Make Payment'),
               onPressed: () async {
-                await makePayment();
+                await StripeService().makePayment('120', 'USD', context);
               },
             )
           ],
