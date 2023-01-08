@@ -49,45 +49,27 @@ class StripeService {
     }
   }
 
-  makePayment(String amount, String currency, BuildContext context) async {
+  Future<void> makePayment() async {
     try {
-      final makePaymentIntent = await createPaymentIntent(amount, currency);
-      Stripe.instance
+      final makePaymentIntent = await createPaymentIntent('125', 'pkr');
+      await Stripe.instance
           .initPaymentSheet(
               paymentSheetParameters: SetupPaymentSheetParameters(
             paymentIntentClientSecret: makePaymentIntent['client-secret'],
             merchantDisplayName: 'Hafeez Rana',
             style: ThemeMode.dark,
           ))
-          .then((value) => null);
-      displayPaymentSheet(context);
+          .then((value) {});
+      await displayPaymentSheet();
     } catch (e) {
       throw Exception(e);
     }
   }
 
-  displayPaymentSheet(BuildContext context) async {
+  Future<void> displayPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) {
-        showDialog(
-          context: context,
-          builder: (_) {
-            return AlertDialog(
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(
-                    Icons.check_circle,
-                    color: Colors.green,
-                    size: 100.0,
-                  ),
-                  SizedBox(height: 10.0),
-                  Text("Payment Successful!"),
-                ],
-              ),
-            );
-          },
-        );
+        return const Text('Payment Successful!');
       }).onError((error, stackTrace) {
         throw Exception(error);
       });

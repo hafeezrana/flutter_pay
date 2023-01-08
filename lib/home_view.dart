@@ -17,6 +17,12 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   @override
+  void initState() {
+    StripeService().makePayment();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -29,25 +35,29 @@ class _HomeViewState extends State<HomeView> {
             TextButton(
               child: const Text('Make Payment'),
               onPressed: () async {
-                await StripeService().makePayment('120', 'USD', context);
+                setState(() {});
+                // await StripeService().makePayment();
+                await makePayment('120', 'USD');
               },
-            )
+            ),
           ],
         ),
       ),
     );
   }
 
-  Future<void> makePayment() async {
+  Future<void> makePayment(String amount, String currency) async {
     try {
-      final paymentIntent = await createPaymentIntent('1500', 'PKR');
+      final paymentIntent = await createPaymentIntent(amount, currency);
 
       await Stripe.instance
           .initPaymentSheet(
-              paymentSheetParameters: SetupPaymentSheetParameters(
-                  paymentIntentClientSecret: paymentIntent!['client_secret'],
-                  style: ThemeMode.dark,
-                  merchantDisplayName: 'Ikay'))
+            paymentSheetParameters: SetupPaymentSheetParameters(
+              paymentIntentClientSecret: paymentIntent!['client_secret'],
+              style: ThemeMode.dark,
+              merchantDisplayName: 'Ikay',
+            ),
+          )
           .then((value) {});
 
       // Stripe.buildWebCard(
@@ -128,7 +138,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   calculateAmount(String amount) {
-    final calculatedAmout = (int.parse(amount)) * 21000;
+    final calculatedAmout = (int.parse(amount)) * 100;
     return calculatedAmout.toString();
   }
 }
